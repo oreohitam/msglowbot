@@ -16,7 +16,7 @@ input_shape = 10
 def load_response():
     global responses
     responses = {}
-    with open('dataset/intents.json') as content:
+    with open('dataset/Intent_KM.json') as content:
         data = json.load(content)
     for intent in data['intents']:
         responses[intent['tag']]=intent['responses']
@@ -25,9 +25,9 @@ def load_response():
 def preparation():
     load_response()
     global lemmatizer, tokenizer, le, model
-    tokenizer = pickle.load(open('model/tokenizers.pkl', 'rb'))
-    le = pickle.load(open('model/le.pkl', 'rb'))
-    model = keras.models.load_model('model/Suskabot.h5')
+    tokenizer = pickle.load(open('model/tokenizer.pkl', 'rb'))
+    le = pickle.load(open('model/labelencoder.pkl', 'rb'))
+    model = keras.models.load_model('model/chat_model.h5')
     lemmatizer = WordNetLemmatizer()
     nltk.download('punkt', quiet=True)
     nltk.download('wordnet', quiet=True)
@@ -56,10 +56,9 @@ def predict(vector):
     return response_tag
 
 # menghasilkan jawaban berdasarkan pertanyaan user
-def botResponse(text):
+def generate_response(text):
     texts_p = remove_punctuation(text)
     vector = vectorization(texts_p)
     response_tag = predict(vector)
     answer = random.choice(responses[response_tag])
     return answer
-    
