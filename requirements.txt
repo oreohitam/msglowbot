@@ -1,0 +1,7 @@
+Flask
+keras==2.6.0
+nltk
+numpy
+wordnet
+tensorflow==2.6.0
+scikit-learn
